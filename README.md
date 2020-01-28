@@ -1,2 +1,2 @@
 # MoreThan20Factorial
-An interesting project that lets you know the factorial of any number like 300!
+To use it, simply pass as argument the number you want to know its factorial of. 
