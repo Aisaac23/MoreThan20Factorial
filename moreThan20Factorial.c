@@ -1,24 +1,14 @@
-//The following program allows you to calculate from up to 99!
-2432902008176640000
 /*
 The greater N! that you can calculate in an average computer using C (and most of languages) is 20!. This
 is because: 21! > 18,446,774,073,709,551,615 which is 2^64 (unsigned long long).
 
-The following snippet allows you to calculate from 21! to 99! by doing long multiplication (yes, like in elementary school). Here is an
-example if you don't remember what I'm talking about:
-2432902008176640000     = 20!
-x 21
--------------------------
-02432902008176640000    = 2432902008176640000*1
-4865804016353280000     = 2432902008176640000*2 
--------------------------
-51090942171709440000    = 2432902008176640000 + 4865804016353280000 = 21! 
+The following snippet allows you to calculate the facorial of ANY number, you can for example calculate 3000!
 
-The first parameter should be "1" and the second the factorial number we need, for example, 88.
+There are two ways for this program to work:
 
-Please note that this is only for positive integer numbers. 
+1. Simply pass an unsigned integer and you'll get its factorial.
+2. You can also pass an unsigned integer, followed by an integer greater than zero to indicate the size of each group of digits (default is 3) and fanally one quoted character as separator of each group (default is ','). (e.g. ./moreThan20Factorial 3000! 100 '#' )
 
-This could also be achieved using integers instead of chars but a char is most of the times 4 times smaller than an integer.
 */
 
 #include <stdio.h>
@@ -26,6 +16,7 @@ This could also be achieved using integers instead of chars but a char is most o
 #include <stdlib.h>
 #include <limits.h>
 #include <stdbool.h>
+#include "chkops.h"
 
 void incrementStringNumber(char* numberPlusPlus);
 char* moreThan20Factorial( char *n);
@@ -35,11 +26,28 @@ char* formatNumber(char *n, int slice, char separator);
 int main(int argc, char* argv[])
 {
 	char *result; 
-
-	result = moreThan20Factorial(argv[1]);
-	result = formatNumber(result, 100, '\n');
-
+	if(argc == 4)
+	{
+		if( isUnsignedInteger(argv[1]) && isUnsignedInteger(argv[2]) && strlen(argv[3]) == 1 )
+		{
+			result = moreThan20Factorial( argv[1] );
+			argv[3][1] = argv[3][0] == 'n' ? '\n' : argv[3][0];
+			result = formatNumber( result, atoi(argv[2]) , argv[3][0] );
+		}
+	}
+	else if(argc == 2)
+	{
+		result = moreThan20Factorial( argv[1] );
+		result = formatNumber( result, 3, ',' );
+	}
+	else
+	{
+		printf("Thre could be some data missing in: %s\n", argv[0]);
+		exit(EXIT_SUCCESS);
+	}
+		
 	printf("%s! = %s\n", argv[1], result);
+	return EXIT_SUCCESS;
 }
 
 char* formatNumber(char *n, int slice, char separator)
