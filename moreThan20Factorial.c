@@ -24,14 +24,15 @@ char* moreThan20Factorial( char *n);
 
 int main(int argc, char* argv[])
 {
-	char *result; 
+	char *result, s[2];
+
 	if(argc == 4)
 	{
-		if( isUnsignedInteger(argv[1]) && isUnsignedInteger(argv[2]) && strlen(argv[3]) == 1 )
+		if( isUnsignedInteger(argv[1]) && isUnsignedInteger(argv[2]) && strlen(argv[3]) <= 2 )
 		{
 			result = moreThan20Factorial( argv[1] );
-			argv[3][1] = argv[3][0] == 'n' ? '\n' : argv[3][0];
-			result = formatNumber( result, atoi(argv[2]) , argv[3][0] );
+			s[0] = isUnsignedInteger(argv[3]) ? atoi(argv[3]) : argv[3][0];
+			result = formatNumber( result, atoi(argv[2]) , s[0]);
 		}
 	}
 	else if(argc == 2)
